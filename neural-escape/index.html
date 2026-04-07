@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural Escape - IA Edition</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <canvas id="renderCanvas"></canvas>
+
+  <div id="hudRoot">
+    <div id="topRightScore">Score: <span id="scoreValue">0</span></div>
+
+    <div id="topCenterTimer" class="hidden">
+      <svg id="timerSvg" viewBox="0 0 120 120" aria-label="Timer Quiz">
+        <circle cx="60" cy="60" r="52" class="timer-bg"></circle>
+        <circle cx="60" cy="60" r="52" class="timer-fg" id="timerCircle"></circle>
+      </svg>
+      <div id="timerValue">20</div>
+    </div>
+
+    <div id="bottomLeftStats">
+      <div class="barLabel">VIE</div>
+      <div class="barWrap">
+        <div id="hpBar" class="bar hp"></div>
+      </div>
+      <div class="barLabel">STAMINA</div>
+      <div class="barWrap">
+        <div id="staminaBar" class="bar stamina"></div>
+      </div>
+    </div>
+
+    <div id="bottomCenterSignal">
+      <div class="barLabel">SIGNAL IA</div>
+      <div class="barWrap signalWrap">
+        <div id="signalBar" class="bar signal"></div>
+      </div>
+      <div id="signalValue">0</div>
+    </div>
+
+    <div id="dialogueBubble" class="hidden"></div>
+
+    <canvas id="minimap" width="160" height="160" aria-label="Minimap"></canvas>
+  </div>
+
+  <div id="quizOverlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="panel">
+      <h2>Question du Gardien IA</h2>
+      <p id="quizQuestion"></p>
+      <div id="quizChoices" class="choices"></div>
+    </div>
+  </div>
+
+  <div id="combatOverlay" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="panel">
+      <h2>COMBAT</h2>
+      <p id="combatText">Choisissez une action.</p>
+      <div class="actions">
+        <button id="attackBtn">ATTAQUER</button>
+        <button id="dodgeBtn">ESQUIVER</button>
+      </div>
+      <div id="combatCountdown">3</div>
+    </div>
+  </div>
+
+  <div id="deathOverlay" class="hidden">
+    <div class="deathPanel">
+      <h1>VOUS ETES MORT</h1>
+      <p>Score final: <span id="deathScore">0</span></p>
+      <button id="restartBtn">Recommencer</button>
+    </div>
+  </div>
+
+  <div id="victoryOverlay" class="hidden">
+    <div class="deathPanel">
+      <h1>VICTOIRE</h1>
+      <p>Score final: <span id="victoryScore">0</span></p>
+      <button id="restartVictoryBtn">Rejouer</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pathfinding@0.4.18/visual/lib/pathfinding-browser.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+  <script type="module" src="./src/indexScene.js"></script>
+</body>
+
+</html>
