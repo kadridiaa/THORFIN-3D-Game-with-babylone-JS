@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tower Defense — IA Edition</title>
+
+  <!-- BabylonJS 6.x depuis CDN -->
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="game-container">
+
+  <!-- Surface de rendu 3D BabylonJS -->
+  <canvas id="renderCanvas"></canvas>
+
+  <!-- ═══════════════════════════════════════════════
+       HUD PRINCIPAL (haut de l'écran)
+  ════════════════════════════════════════════════ -->
+  <div id="hud">
+    <span id="hud-wave">Vague : 0</span>
+    <span id="hud-gold">Or : 100</span>
+    <span id="hud-lives">Vie base : ❤️ 20</span>
+    <span id="hud-score">Score : 0</span>
+
+    <!-- Barre de niveau d'IA ennemie -->
+    <div id="ai-level-block">
+      <span id="ai-level-label">IA : Basique</span>
+      <div id="ai-bar-bg">
+        <div id="ai-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       NOTIFICATION DE VAGUE (centrée, temporaire)
+  ════════════════════════════════════════════════ -->
+  <div id="wave-notif"></div>
+
+  <!-- ═══════════════════════════════════════════════
+       BOUTON "LANCER LA PROCHAINE VAGUE"
+  ════════════════════════════════════════════════ -->
+  <div id="next-wave-btn" onclick="WAVES.launchNext()">
+    <span>Lancer Vague <strong id="next-wave-num">1</strong></span>
+    <small id="wave-timer">dans 4s</small>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PANNEAU DE SÉLECTION DES TOURELLES (bas)
+  ════════════════════════════════════════════════ -->
+  <div id="tower-panel">
+
+    <div class="tower-btn active" data-type="BASIC" onclick="TOWERS.selectType('BASIC')">
+      <div class="tower-btn-name">Standard</div>
+      <div class="tower-btn-stats">DMG : 20 | PRT : 4 u<br>CAD : 1 tir/s</div>
+      <div class="tower-btn-cost">50 or</div>
+      <div class="tower-btn-key">Touche 1</div>
+    </div>
+
+    <div class="tower-btn" data-type="SNIPER" onclick="TOWERS.selectType('SNIPER')">
+      <div class="tower-btn-name">Sniper</div>
+      <div class="tower-btn-stats">DMG : 60 | PRT : 7.5 u<br>CAD : 0.4 tir/s</div>
+      <div class="tower-btn-cost">75 or</div>
+      <div class="tower-btn-key">Touche 2</div>
+    </div>
+
+    <div class="tower-btn" data-type="RAPID" onclick="TOWERS.selectType('RAPID')">
+      <div class="tower-btn-name">Mitrailleuse</div>
+      <div class="tower-btn-stats">DMG : 8 | PRT : 3 u<br>CAD : 3.5 tirs/s</div>
+      <div class="tower-btn-cost">40 or</div>
+      <div class="tower-btn-key">Touche 3</div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       OVERLAY GAME OVER
+  ════════════════════════════════════════════════ -->
+  <div id="overlay-gameover" class="overlay hidden">
+    <div class="overlay-box gameover-box">
+      <h1 class="overlay-title gameover-title">GAME OVER</h1>
+      <p class="overlay-sub">La base a été détruite par les robots IA</p>
+      <div class="overlay-stats">
+        <div id="go-score">Score final : 0</div>
+        <div id="go-wave">Vague atteinte : 0</div>
+      </div>
+      <button class="overlay-btn" onclick="location.reload()">Rejouer</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       OVERLAY VICTOIRE
+  ════════════════════════════════════════════════ -->
+  <div id="overlay-victory" class="overlay hidden">
+    <div class="overlay-box victory-box">
+      <h1 class="overlay-title victory-title">VICTOIRE !</h1>
+      <p class="overlay-sub">Toutes les vagues d'IA repoussées !</p>
+      <div class="overlay-stats">
+        <div id="vic-score">Score final : 0</div>
+      </div>
+      <button class="overlay-btn" onclick="location.reload()">Rejouer</button>
+    </div>
+  </div>
+
+</div><!-- #game-container -->
+
+<!-- ═══════════════════════════════════════════════
+     MODULES JS (ordre des dépendances)
+════════════════════════════════════════════════ -->
+<script src="js/scene.js"></script>
+<script src="js/map.js"></script>
+<script src="js/game-state.js"></script>
+<script src="js/enemies.js"></script>
+<script src="js/towers.js"></script>
+<script src="js/projectiles.js"></script>
+<script src="js/waves.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

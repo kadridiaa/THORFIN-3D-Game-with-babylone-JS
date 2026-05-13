@@ -1,0 +1,284 @@
+/* =============================================
+   Tower Defense — IA Edition · styles complets
+   ============================================= */
+
+/* ── RESET ────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #08080f;
+  font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+  overflow: hidden;
+  color: #e0e0e0;
+  user-select: none;
+}
+
+/* ── CONTENEUR GLOBAL ────────────────────────── */
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ── CANVAS 3D ───────────────────────────────── */
+#renderCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* ══════════════════════════════════════════════
+   HUD PRINCIPAL
+══════════════════════════════════════════════ */
+#hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.82), transparent);
+  pointer-events: none;
+  flex-wrap: wrap;
+}
+
+#hud span {
+  font-size: 0.90rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 3px 11px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  white-space: nowrap;
+}
+
+#hud-wave  { color: #64b5f6; }
+#hud-gold  { color: #ffd54f; }
+#hud-lives { color: #ef9a9a; }
+#hud-score { color: #a5d6a7; }
+
+/* ── Barre de niveau d'IA ────────────────────── */
+#ai-level-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-left: auto;
+}
+
+#ai-level-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #64b5f6;
+  text-align: right;
+}
+
+#ai-bar-bg {
+  width: 130px;
+  height: 8px;
+  background: rgba(255,255,255,0.10);
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.12);
+  overflow: hidden;
+}
+
+#ai-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: #64b5f6;
+  border-radius: 4px;
+  transition: width 0.6s ease, background 0.6s ease;
+}
+
+/* ══════════════════════════════════════════════
+   NOTIFICATION DE VAGUE (centre écran)
+══════════════════════════════════════════════ */
+#wave-notif {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  transform: translateX(-50%) scale(0.85);
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 14px 40px;
+  border-radius: 10px;
+  background: rgba(0,0,0,0.75);
+  border: 2px solid rgba(255,255,255,0.15);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.30s ease, transform 0.30s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+#wave-notif.visible {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* Couleur selon le type de notif */
+#wave-notif.notif-start    { color: #ef5350; border-color: rgba(239,83,80,0.4); }
+#wave-notif.notif-complete { color: #a5d6a7; border-color: rgba(165,214,167,0.4); }
+#wave-notif.notif-info     { color: #ffd54f; border-color: rgba(255,213,79,0.3); font-size: 1.2rem; top: 30%; }
+
+/* ══════════════════════════════════════════════
+   BOUTON "LANCER PROCHAINE VAGUE"
+══════════════════════════════════════════════ */
+#next-wave-btn {
+  position: absolute;
+  top: 68px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 18px;
+  background: rgba(100, 181, 246, 0.14);
+  border: 1.5px solid #64b5f6;
+  border-radius: 8px;
+  color: #64b5f6;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+#next-wave-btn:hover {
+  background: rgba(100, 181, 246, 0.28);
+  box-shadow: 0 0 14px rgba(100, 181, 246, 0.35);
+}
+
+#wave-timer {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: #90caf9;
+  letter-spacing: 0.04em;
+}
+
+/* ══════════════════════════════════════════════
+   PANNEAU TOURELLES (bas centre)
+══════════════════════════════════════════════ */
+#tower-panel {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  background: rgba(4, 6, 12, 0.85);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+}
+
+.tower-btn {
+  width: 132px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  color: #c8c8d0;
+  cursor: pointer;
+  text-align: center;
+  transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+}
+
+.tower-btn:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.30);
+}
+
+.tower-btn.active {
+  border-color: #64b5f6;
+  background: rgba(100, 181, 246, 0.12);
+  box-shadow: 0 0 14px rgba(100, 181, 246, 0.22);
+}
+
+.tower-btn-name  { font-size: 0.86rem; font-weight: 700; margin-bottom: 4px; color: #e8e8f0; }
+.tower-btn-stats { font-size: 0.70rem; color: #8888a0; margin-bottom: 3px; line-height: 1.5; }
+.tower-btn-cost  { font-size: 0.82rem; font-weight: 700; color: #ffd54f; }
+.tower-btn-key   { font-size: 0.68rem; color: #50506070; margin-top: 3px; }
+
+/* ══════════════════════════════════════════════
+   OVERLAYS (GAME OVER + VICTOIRE)
+══════════════════════════════════════════════ */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.overlay.hidden   { display: none; }
+.overlay.visible  { opacity: 1; }
+
+.overlay-box {
+  text-align: center;
+  padding: 48px 56px;
+  border-radius: 16px;
+  border: 2px solid rgba(255,255,255,0.12);
+  background: rgba(8,8,18,0.92);
+  min-width: 320px;
+  transform: translateY(0);
+}
+
+.overlay-title {
+  font-size: 3.2rem;
+  font-weight: 900;
+  letter-spacing: 0.10em;
+  margin-bottom: 12px;
+}
+
+.overlay-sub {
+  font-size: 1rem;
+  color: #909090;
+  margin-bottom: 24px;
+}
+
+.overlay-stats {
+  font-size: 1.1rem;
+  color: #c8c8d8;
+  line-height: 2;
+  margin-bottom: 28px;
+}
+
+.overlay-btn {
+  padding: 12px 36px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.10s;
+}
+
+.overlay-btn:hover  { filter: brightness(1.15); transform: scale(1.04); }
+.overlay-btn:active { transform: scale(0.97); }
+
+/* Game Over : rouge sombre */
+.gameover-box   { border-color: rgba(239,83,80,0.35); }
+.gameover-title { color: #ef5350; text-shadow: 0 0 30px rgba(239,83,80,0.5); }
+.gameover-box .overlay-btn {
+  background: #ef5350;
+  color: #fff;
+}
+
+/* Victoire : doré */
+.victory-box   { border-color: rgba(255,213,79,0.35); }
+.victory-title { color: #ffd54f; text-shadow: 0 0 30px rgba(255,213,79,0.5); }
+.victory-box .overlay-btn {
+  background: #ffd54f;
+  color: #111;
+}
